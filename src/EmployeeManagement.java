@@ -1,202 +1,76 @@
-
 import java.util.*;
-import java.io.*;
-public class EmployeeManagement{
-  String temp ="Database/newEmployeeDatabase.txt";
-  public boolean unixOS = true; 
-  public static String employeeDatabase = "Database/employeeDatabase.txt";
-  public List<Employee> employees = new ArrayList<Employee>();
-  public EmployeeManagement(){}
-  
-  public List<Employee> getEmployeeList()
-  {
-	  readFile();
-	  return employees;
-  }
-  
-  
-  
-  public void add(String name,String password, boolean employee)
-  {
-	  readFile();
-	  String toWrite = "";
-	  int username= (Integer.parseInt(employees.get(employees.size()-1).getUsername())+1);
-	  try{
-	      FileWriter fw = new FileWriter(employeeDatabase,true);
-	      BufferedWriter bw = new BufferedWriter(fw);
-	      if (employee)
-	    	  toWrite = Integer.toString(username) +" "+ "Cashier" +" " + name +" "+password;
-	      else
-	    	  toWrite = Integer.toString(username) +" "+ "Admin" +" " + name +" "+password;
-	      //bw.write(System.getProperty( "line.separator" ));
-	      bw.write(toWrite);
-	      bw.write(System.getProperty( "line.separator" ));
-	      bw.close();
-	      
-	    } catch (FileNotFoundException e) {
-	      System.out.println("Unable to open file Log File for logIn"); 
-	    }
-	    catch (IOException e) {
-	      e.printStackTrace();
-	    }
-  }
-  
-  public boolean delete(String username)
-  {
-	  readFile();
-	  boolean find = false;
-	  int index = -1;
-	  
-	  for(int i=0;i<employees.size();i++)
-	  {
-		  if(username.equals((employees.get(i)).getUsername()))
-		  {
-			  find=true;
-			  index=i;
-			  break;
-		  }
-	  }
-	  if (!find)
-		  return find;
-	  
-	  else
-	  {
-		  employees.remove(index);
-		  
-		  boolean ableToOpen=true;
-		    try{
-		      File tempF= new File (temp);
-		      BufferedWriter writer = new BufferedWriter(new FileWriter(tempF));
-		      for (int i=0; i<employees.size();i++){
-		        writer.write(employees.get(i).getUsername()+" "+employees.get(i).getPosition()+" "+employees.get(i).getName()+" "+employees.get(i).getPassword());
-		        writer.write(System.getProperty( "line.separator" ));
-		      }
-		      writer.close(); 
-		      File file = new File(employeeDatabase);
-		      file.delete();
-		      tempF.renameTo(new File(employeeDatabase));
-		    }
-		    catch(FileNotFoundException ex) {
-		      System.out.println(
-		                         "Unable to open file 'temp'"); 
-		      ableToOpen = false;
-		    }
-		    catch(IOException ex) {
-		      System.out.println(
-		                         "Error reading file 'temp'");  
-		      ableToOpen = false;
-		    }
-		    find = ableToOpen;
-	  }
-	  return find;
-	  
-  }
-  
- 
-  
-  public int update(String username, String password, String position, String name)
-  {
-	  readFile();
-	  int userFound = -1; //user not found
-	  int index = -1;
-	  for(int i=0;i<employees.size();i++){
-	        if(username.equals((employees.get(i).getUsername())))
-	        {
-	          userFound = 0; //user found
-	          index=i;
-	          break;
-	        }
-	  }
-	  
-	  if (userFound == 0)
-	  {
-		  if (!(position.equals("Admin")||position.equals("Cashier") || position.equals("")))
-			  return userFound = -2;
-		  
-		  //updates information
-		  if (!password.equals(""))
-			  employees.get(index).setPassword(password);
-		  
-		  if (!position.equals(""))
-			  employees.get(index).setPosition(position);
-		  
-	      if (!name.equals(""))
-	    	  employees.get(index).setName(name);
-	      
-	      
-	      try{
-	        File tempF= new File (temp);
-	        FileReader fileR = new FileReader(employeeDatabase);
-	        BufferedReader reader = new BufferedReader(fileR);
-	        BufferedWriter writer = new BufferedWriter(new FileWriter(tempF));
-	        for (int i=0; i<employees.size();i++){
-	          writer.write(employees.get(i).getUsername()+" "+employees.get(i).getPosition()+" "+employees.get(i).getName()+" "+employees.get(i).getPassword());
-	          writer.write(System.getProperty( "line.separator" ));
-	        }
-	        fileR.close();
-	        writer.close(); 
-	        reader.close(); 
-	        File file = new File(employeeDatabase);
-	        file.delete();
-	        tempF.renameTo(new File(employeeDatabase));
-	      }
-	      catch(FileNotFoundException ex) {
-	        System.out.println(
-	                           "Unable to open file 'temp'"); 
-	      }
-	      catch(IOException ex) {
-	        System.out.println(
-	                           "Error reading file 'temp'");  
-	      }
-		  
-	  }
-	  return userFound;
-  }
-  
-  
-  
-  
-  
-  
-  private void readFile(){
-    if (System.getProperty("os.name").startsWith("W")||System.getProperty("os.name").startsWith("w")){
-      //unixOS = false; 
-      //employeeDatabase = "..\\Database\\employeeDatabase.txt";
-    }
-    
-    String line = null;
-    String[] lineSort;
-    
-    
-    //Checks database file for the item  
-    try {
-  
-      FileReader fileR = new FileReader(employeeDatabase);
-      BufferedReader textReader = new BufferedReader(fileR);
-      //reads the entire database
-      employees.clear();
-      while ((line = textReader.readLine()) != null)
-      {
-        lineSort = line.split(" "); //separates words    
-        String name=lineSort[2]+" "+lineSort[3];
-        employees.add(new Employee(lineSort[0],name,lineSort[1],lineSort[4]));
-      }
-      textReader.close();
-      
-    }
-    
-    //catches exceptions
-    catch(FileNotFoundException ex) {
-      System.out.println(
-                         "Unable to open file '" + 
-                         employeeDatabase + "'"); 
 
-    }
-    catch(IOException ex) {
-      System.out.println(
-                         "Error reading file '" 
-                           + employeeDatabase + "'");  
+public class EmployeeManagement {
+    private EmployeeRepository employeeRepository;
 
+    public EmployeeManagement() {
+        this.employeeRepository = new FileEmployeeRepository();
     }
-  }
+
+    public List<Employee> getEmployeeList() {
+        return employeeRepository.findAll();
+    }
+
+    public void add(String name, String password, boolean employee) {
+        // Generate new ID (simple auto-increment logic based on max existing ID)
+        List<Employee> all = employeeRepository.findAll();
+        int maxId = 0;
+        for (Employee e : all) {
+            try {
+                int id = Integer.parseInt(e.getUsername());
+                if (id > maxId) maxId = id;
+            } catch (NumberFormatException ex) {
+                // Ignore non-integer IDs
+            }
+        }
+        String newUsername = String.valueOf(maxId + 1);
+        String position = employee ? "Cashier" : "Admin";
+        
+        // Split name into first and last
+        String[] nameParts = name.split(" ");
+        String firstName = nameParts.length > 0 ? nameParts[0] : "";
+        String lastName = nameParts.length > 1 ? nameParts[1] : "";
+
+        Employee newEmployee = new Employee(newUsername, name, position, password);
+        employeeRepository.save(newEmployee);
+    }
+
+    public boolean delete(String username) {
+        Employee emp = employeeRepository.findByUsername(username);
+        if (emp != null) {
+            employeeRepository.delete(username);
+            return true;
+        }
+        return false;
+    }
+
+    public int update(String username, String password, String position, String name) {
+        Employee emp = employeeRepository.findByUsername(username);
+        if (emp == null) {
+            return -1; // User not found
+        }
+
+        if (!(position.equals("Admin") || position.equals("Cashier") || position.equals(""))) {
+            return -2; // Invalid position
+        }
+
+        // Update fields if they are not empty
+        if (!password.equals("")) {
+            // In a real app, we would setter methods on Employee, but Employee might be immutable or lack setters.
+            // Assuming we need to create a new object or modify existing if setters exist.
+            // Checking Employee class... it seems to have setters based on previous usage.
+             emp.setPassword(password);
+        }
+
+        if (!position.equals("")) {
+             emp.setPosition(position);
+        }
+
+        if (!name.equals("")) {
+             emp.setName(name);
+        }
+        
+        employeeRepository.save(emp);
+        return 0; // Success
+    }
 }

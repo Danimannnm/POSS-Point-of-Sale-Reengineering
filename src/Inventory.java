@@ -1,121 +1,59 @@
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
-import java.io.PrintWriter;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.File;
 
-public class Inventory 
-{
-	//Singleton design pattern applied
-	private static Inventory uniqueInstance = null;
-	//constructor
-	private Inventory() {}
-	
-	public static synchronized Inventory getInstance()
-	{
-		if (uniqueInstance == null)
-			uniqueInstance = new Inventory();
-		return uniqueInstance;
-	}
-	
-	//methods
-	public boolean accessInventory(String databaseFile, List <Item> databaseItem)
-	{
-		boolean ableToOpen = true;
-		
-		String line = null;
-		String[] lineSort;
-		
-		//Checks database file for the item		
-		try {
-			FileReader fileR = new FileReader(databaseFile);
-			BufferedReader textReader = new BufferedReader(fileR);
-			//reads the entire database
-			while ((line = textReader.readLine()) != null)
-			{
-				lineSort = line.split(" "); //separates words
-				databaseItem.add(new Item(Integer.parseInt(lineSort[0]),lineSort[1],Float.parseFloat(lineSort[2]),
-						Integer.parseInt(lineSort[3])));
-			}
-			textReader.close();
-			
-		}
-		
-		//catches exceptions
-		 catch(FileNotFoundException ex) {
-	            System.out.println(
-	                "Unable to open file '" + 
-	                		databaseFile + "'"); 
-	            ableToOpen = false;
-	        }
-	        catch(IOException ex) {
-	            System.out.println(
-	                "Error reading file '" 
-	                + databaseFile + "'");  
-	            ableToOpen = false;
-	        }
-		
-		
-		return ableToOpen;
-	}
-	
-	public void updateInventory(String databaseFile, List <Item> transactionItem, List <Item> databaseItem,boolean takeFromInventory)
-	{
-		int counter2;
-		int newAmount; //stores new amount (number of items in database - number of items in transaction)
-		
-		
-		//updates inventory list
-		for (int counter = 0 ; counter < transactionItem.size(); counter++) //for every item on this transaction
-		{
-			for (counter2 = 0; counter2 < databaseItem.size(); counter2++) //for every item on the database
-			{
-				if (transactionItem.get(counter).getItemID() == databaseItem.get(counter2).getItemID()) //if itemIDs are equal, update new amount on the list
-				{
-					if (takeFromInventory) //rental or sale
-						newAmount = databaseItem.get(counter2).getAmount() - transactionItem.get(counter).getAmount();
-					
-					else //handling returns
-						newAmount = databaseItem.get(counter2).getAmount() + transactionItem.get(counter).getAmount();
-					databaseItem.get(counter2).updateAmount(newAmount);
-					break; //breaks when item is found
-				}
-			}
-		}
-		
-		
-		//saves databaseItem list -> database.txt file (to implement)
-		//overwrites file and reinserts all items (with amount updated)
-		try
-		{
-			File file = new File(databaseFile);		
-			FileWriter fileR = new FileWriter(file.getAbsoluteFile(),false);
-			BufferedWriter bWriter = new BufferedWriter(fileR);
-			PrintWriter writer = new PrintWriter(bWriter);
-			
-			for (int wCounter = 0; wCounter < databaseItem.size() ; ++wCounter)
-			{
-				writer.println(String.valueOf(databaseItem.get(wCounter).getItemID()) + " " + databaseItem.get(wCounter).getItemName() + " "
-						+ String.valueOf(databaseItem.get(wCounter).getPrice() ) + " " +
-						String.valueOf( databaseItem.get(wCounter).getAmount()) );
-			}
-			
-			bWriter.close(); //closes writer
-		}
-		
-		catch(IOException e){}
-		{
-		}
-		
-	
-	}
-	
-}	
+public class Inventory {
+    // Singleton design pattern applied
+    private static Inventory uniqueInstance = null;
+    private ItemRepository itemRepository;
 
+    // constructor
+    private Inventory() {
+        // Default to file-based repository for now
+        // In a real dependency injection scenario, this would be passed in
+        this.itemRepository = new FileItemRepository("Database/itemDatabase.txt");
+    }
 
-  
+    public static synchronized Inventory getInstance() {
+        if (uniqueInstance == null)
+            uniqueInstance = new Inventory();
+        return uniqueInstance;
+    }
+
+    // methods
+    public boolean accessInventory(String databaseFile, List<Item> databaseItem) {
+        // Update repository path if it changes (handling the legacy behavior where path is passed in)
+        // Ideally, the repository should be fixed to one source, but we adapt to legacy calls here.
+        if (itemRepository instanceof FileItemRepository) {
+             // Re-instantiate if we really need to switch files, or just trust the default.
+             // For now, we'll reload from the repo.
+             this.itemRepository = new FileItemRepository(databaseFile);
+        }
+        
+        List<Item> items = itemRepository.findAll();
+        databaseItem.clear();
+        databaseItem.addAll(items);
+        return true;
+    }
+
+    public void updateInventory(String databaseFile, List<Item> transactionItem, List<Item> databaseItem, boolean takeFromInventory) {
+        // Sync repository with the current databaseFile
+        this.itemRepository = new FileItemRepository(databaseFile);
+        
+        for (Item tItem : transactionItem) {
+            Item dbItem = itemRepository.findById(tItem.getItemID());
+            if (dbItem != null) {
+                int newAmount;
+                if (takeFromInventory) {
+                    newAmount = dbItem.getAmount() - tItem.getAmount();
+                } else {
+                    newAmount = dbItem.getAmount() + tItem.getAmount();
+                }
+                dbItem.updateAmount(newAmount);
+                itemRepository.save(dbItem);
+            }
+        }
+        
+        // Update the in-memory list passed by the caller to reflect changes
+        databaseItem.clear();
+        databaseItem.addAll(itemRepository.findAll());
+    }
+}
