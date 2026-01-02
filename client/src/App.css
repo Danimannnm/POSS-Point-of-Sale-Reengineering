@@ -1,0 +1,505 @@
+/* ============================================
+   NEUMORPHISM UI/UX DESIGN SYSTEM
+   Standardized Component Styles
+   ============================================ */
+
+/* ============================================
+   UTILITY CLASSES (Soft UI)
+   ============================================ */
+.neu-card {
+  background: var(--bg-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--neu-raised);
+  padding: 2rem;
+  border: none;
+}
+
+.neu-btn {
+  border-radius: var(--radius-md);
+  background: var(--bg-light);
+  box-shadow: var(--neu-raised);
+  color: var(--text-main);
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.neu-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: -2px -2px 5px #ffffff, 2px 2px 5px #bebebe;
+  /* Sharper hover */
+}
+
+.neu-btn:active {
+  transform: translateY(0);
+  box-shadow: var(--neu-inset);
+}
+
+.neu-btn-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-light);
+  box-shadow: var(--neu-raised-sm);
+  color: var(--text-main);
+  transition: all 0.2s ease;
+}
+
+.neu-btn-icon:active {
+  box-shadow: var(--neu-inset-sm);
+}
+
+/* ============================================
+   LOGIN PAGE
+   ============================================ */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--bg-dark);
+  padding: 1.5rem;
+}
+
+.login-card {
+  background: var(--bg-light);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2.5rem;
+  box-shadow: var(--neu-raised);
+  width: 100%;
+  max-width: 440px;
+  border: none;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.login-header h2 {
+  color: var(--text-main);
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.login-header p {
+  color: var(--text-muted);
+}
+
+.form-group label {
+  color: var(--text-main);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.form-group input,
+.form-group select {
+  background: var(--bg-light);
+  box-shadow: var(--neu-inset);
+  color: var(--text-main);
+  border: none;
+  border-radius: var(--radius-md);
+}
+
+.form-group input:focus {
+  box-shadow: var(--neu-inset), inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.form-actions button {
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+/* ============================================
+   ADMIN DASHBOARD
+   ============================================ */
+.admin-container {
+  min-height: 100vh;
+  background: var(--bg-dark);
+}
+
+.admin-header {
+  background: var(--bg-light);
+  padding: 1.5rem 2rem;
+  box-shadow: var(--neu-raised);
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.admin-header h2 {
+  margin: 0;
+  color: var(--text-main);
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tab-buttons button {
+  margin-right: 1rem;
+  border-radius: var(--radius-md);
+  padding: 0.5rem 1.5rem;
+  font-size: 0.9rem;
+}
+
+.tab-buttons button.active {
+  box-shadow: var(--neu-inset);
+  color: var(--primary-color);
+}
+
+.tab-buttons button.secondary {
+  box-shadow: var(--neu-raised);
+}
+
+.admin-content {
+  padding: 0 2rem 2rem;
+}
+
+.employee-table-container,
+.inventory-table-container {
+  background: var(--bg-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--neu-raised);
+  padding: 1.5rem;
+  overflow: hidden;
+}
+
+table {
+  border-spacing: 0 10px;
+  /* Gap between rows */
+}
+
+thead th {
+  border-bottom: none;
+  color: var(--text-muted);
+}
+
+tbody tr {
+  background: var(--bg-light);
+  box-shadow: var(--neu-raised-sm);
+  /* Specific row lift */
+  border-radius: var(--radius-sm);
+}
+
+tbody tr:hover {
+  transform: scale(1.005);
+}
+
+td {
+  padding: 1rem;
+}
+
+/* ============================================
+   CASHIER DASHBOARD
+   ============================================ */
+.cashier-container {
+  min-height: 100vh;
+  background: var(--bg-dark);
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.cashier-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.cashier-actions {
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  width: 100%;
+}
+
+.cashier-btn {
+  height: 180px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: var(--bg-light);
+  border-radius: 50px;
+  box-shadow: var(--neu-raised);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border: none;
+  /* remove borders */
+}
+
+/* Colored Accents on Text/Icon Only */
+.cashier-btn.sale {
+  color: var(--success-color);
+}
+
+.cashier-btn.rental {
+  color: var(--primary-color);
+}
+
+.cashier-btn.return {
+  color: var(--warning-color);
+}
+
+.cashier-btn.logout {
+  color: var(--danger-color);
+  grid-column: 1 / -1;
+  height: 100px;
+}
+
+.cashier-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: -5px -5px 10px #ffffff, 5px 5px 10px #bebebe;
+}
+
+.cashier-btn:active {
+  transform: translateY(0);
+  box-shadow: var(--neu-inset);
+}
+
+/* ============================================
+   TRANSACTION PAGE
+   ============================================ */
+.transaction-container {
+  min-height: 100vh;
+  background: var(--bg-dark);
+  padding: 2rem;
+}
+
+.transaction-header {
+  background: var(--bg-light);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--neu-raised);
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.transaction-content {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+}
+
+.cart-section,
+.actions-section {
+  background: var(--bg-light);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--neu-raised);
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: var(--radius-md);
+  background: var(--bg-light);
+  box-shadow: var(--neu-raised-sm);
+  border: none;
+}
+
+.cart-total {
+  padding: 1.5rem;
+  background: var(--bg-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--neu-inset);
+  /* Inset for info display */
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.cart-total .total-amount {
+  color: var(--primary-color);
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+
+.action-buttons-vertical button {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 1.25rem;
+  font-size: 1.1rem;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  .transaction-content {
+    grid-template-columns: 1fr;
+  }
+
+  .cashier-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+.text-success {
+  color: var(--success-600);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 1024px) {
+  .transaction-content {
+    grid-template-columns: 1fr;
+  }
+
+  .actions-section {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .cashier-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .cashier-btn {
+    height: 100px;
+  }
+
+  .admin-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .transaction-container,
+  .cashier-container {
+    padding: var(--spacing-md);
+  }
+
+  .login-card {
+    padding: var(--spacing-lg);
+  }
+}
+
+
+/* ============================================
+   PRODUCT GRID & POS
+   ============================================ */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.product-card {
+  background: var(--bg-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--neu-raised);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 10px 10px 20px #bebebe, -10px -10px 20px #ffffff;
+}
+
+.product-card:active {
+  transform: translateY(0);
+  box-shadow: var(--neu-inset);
+}
+
+.product-name {
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.product-price {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.product-stock {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+}
+
+/* SEARCH BAR */
+.search-bar {
+  margin-bottom: 2rem;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 1rem;
+  border-radius: var(--radius-full);
+  padding-left: 2rem;
+}
+
+/* KEYPAD */
+.keypad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.keypad-btn {
+  background: var(--bg-light);
+  box-shadow: var(--neu-raised-sm);
+  border-radius: var(--radius-full);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 auto;
+  cursor: pointer;
+  transition: all 0.1s;
+  border: none;
+}
+
+.keypad-btn:active {
+  box-shadow: var(--neu-inset-sm);
+}
+
+@media (max-width: 480px) {
+  .cashier-header h2 {
+    font-size: 2rem;
+  }
+
+  .login-header h2 {
+    font-size: 1.5rem;
+  }
+}
